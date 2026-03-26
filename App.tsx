@@ -527,21 +527,19 @@ export default function App() {
             <h3>Strategy Glossary</h3>
             <div className="glossary-grid">
                 <div className="glossary-item">
+                    <h4>Deck Distribution</h4>
+                    <p>The number of cards remaining for each card value in the deck.</p>
+                </div>
+                <div className="glossary-item">
                     <h4>Bust Probability</h4>
                     <p>The chance of drawing a card you already have in your display (when you have 3 or more cards), which would cause you to lose all cards in your display.</p>
                 </div>
+                
                 <div className="glossary-item">
-                    <h4>Expected Steal</h4>
-                    <p>The average number of points you can expect to gain by stealing from opponents on your next draw.</p>
+                    <h4>AI Recommendation</h4>
+                    <p>The recommended action based on the AI's analysis of the current game state. The AI is a neural network, trained over thousands of games against rules-based opponents and checkpoints of itself. It's input is the entire game state, including deck distribution (card counting), player hands, and other relevant information.</p>
                 </div>
-                <div className="glossary-item">
-                    <h4>Stand EV (Expected Value)</h4>
-                    <p>The long-term average value of choosing to "Stand". It's a baseline for comparison.</p>
-                </div>
-                <div className="glossary-item">
-                    <h4>Hit EV (Expected Value)</h4>
-                    <p>The long-term average value of choosing to "Hit". If this is statistically a good move.</p>
-                </div>
+
             </div>
         </div>
       )}
