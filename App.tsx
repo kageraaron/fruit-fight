@@ -17,7 +17,7 @@ import {
   CARD_COUNTS,
   CARD_VALUES
 } from './gameEngine';
-import { TRAINED_WEIGHTS } from './trainedModel';
+import { TRAINED_WEIGHTS } from './trainedModel_';
 
 const cardColors: Record<string, string> = cardColorsRaw;
 
