@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import './App.css';
 import cardColorsRaw from './src/img/colors.json';
-import { cardImages } from './src/img';
 import { 
   AdvancedAI, 
   NeuralAI,
@@ -409,6 +408,48 @@ export default function App() {
         </div>
       )}
 
+      <div className="player-grid">
+        {gameState.players.map((p, idx) => (
+            <div key={p.id} className={`player-card ${idx === gameState.activePlayerIndex ? 'active' : ''}`}>
+            <div className='player-header'>
+                <h3>{p.name}</h3>
+                <div className="score-container">
+                    <span className="score">Score: {calculateTotalScore(p.scorePile)}</span>
+                    {scoreAnimation?.playerId === p.id && (
+                        <div className="score-popup">+{scoreAnimation.amount}</div>
+                    )}
+                    {bustAnimation?.playerId === p.id && (
+                        <div className="bust-popup">BUST!</div>
+                    )}
+                </div>
+            </div>
+            <div className="display-area">
+                {p.display.length === 0 && <div className="empty-display">Empty hand</div>}
+                {p.display.map((c, i) => {
+                    const isBeingStolen = gameState.pendingSteal && 
+                                          gameState.pendingSteal.card === c && 
+                                          idx !== gameState.activePlayerIndex;
+                    
+                    // Logic: If there is a pending steal, only the cards being stolen get their special color.
+                    // Otherwise (normal play), all cards get their special color.
+                    let borderColor = cardColors[c.toString()] || '#ddd';
+                    if (gameState.pendingSteal) {
+                      if (!isBeingStolen && !(gameState.pendingSteal.card === c && idx === gameState.activePlayerIndex)) {
+                        borderColor = '#ddd'; // Fade out other cards
+                      }
+                    }
+
+                    return (
+                        <div key={i} className={`card ${isBeingStolen ? 'being-stolen' : ''}`} style={{ borderColor }}>
+                            <img src={`./src/img/${c}.png`} alt={`Card value ${c}`} />
+                        </div>
+                    );
+                })}
+            </div>
+            </div>
+        ))}
+      </div>
+
       <div className="action-zone">
           <div className="game-message">{gameState.message}</div>
           
@@ -418,7 +459,7 @@ export default function App() {
                 <div className="card-group">
                   <div className="card-label">Drawn:</div>
                   <div className="card" style={{ borderColor: cardColors[gameState.pendingSteal.card.toString()] || '#ddd' }}>
-                    <img src={cardImages[gameState.pendingSteal.card]} alt="Drawn card" />
+                    <img src={`./src/img/${gameState.pendingSteal.card}.png`} alt="Drawn card" />
                   </div>
                 </div>
                 <div className="steal-arrow">→</div>
@@ -427,7 +468,7 @@ export default function App() {
                   <div className="stolen-cards-preview">
                     {Array.from({ length: gameState.pendingSteal.fromPlayers.reduce((acc, p) => acc + p.count, 0) }).map((_, i) => (
                       <div key={i} className="card mini" style={{ borderColor: cardColors[gameState.pendingSteal?.card.toString() || ''] || '#ddd' }}>
-                        <img src={cardImages[gameState.pendingSteal?.card!]} alt="Stolen card" />
+                        <img src={`./src/img/${gameState.pendingSteal?.card}.png`} alt="Stolen card" />
                       </div>
                     ))}
                   </div>
@@ -437,7 +478,7 @@ export default function App() {
               <div className="last-drawn-view">
                 <div className="card-label">Drawn:</div>
                 <div className="card" style={{ borderColor: cardColors[gameState.lastDrawn.toString()] || '#ddd' }}>
-                  <img src={cardImages[gameState.lastDrawn]} alt="Last drawn card" />
+                  <img src={`./src/img/${gameState.lastDrawn}.png`} alt="Last drawn card" />
                 </div>
               </div>
             )}
@@ -473,50 +514,7 @@ export default function App() {
             </div>
           )}
       </div>
-
-      <div className="player-grid">
-        {gameState.players.map((p, idx) => (
-            <div key={p.id} className={`player-card ${idx === gameState.activePlayerIndex ? 'active' : ''}`}>
-            <div className='player-header'>
-                <h3>{p.name}</h3>
-                <div className="score-container">
-                    <span className="score">Score: {calculateTotalScore(p.scorePile)}</span>
-                    {scoreAnimation?.playerId === p.id && (
-                        <div className="score-popup">+{scoreAnimation.amount}</div>
-                    )}
-                    {bustAnimation?.playerId === p.id && (
-                        <div className="bust-popup">BUST!</div>
-                    )}
-                </div>
-            </div>
-            <div className="display-area">
-                {p.display.length === 0 && <div className="empty-display">Empty hand</div>}
-                {p.display.map((c, i) => {
-                    const isBeingStolen = gameState.pendingSteal && 
-                                          gameState.pendingSteal.card === c && 
-                                          idx !== gameState.activePlayerIndex;
-                    
-                    // Logic: If there is a pending steal, only the cards being stolen get their special color.
-                    // Otherwise (normal play), all cards get their special color.
-                    let borderColor = cardColors[c.toString()] || '#ddd';
-                    if (gameState.pendingSteal) {
-                      if (!isBeingStolen && !(gameState.pendingSteal.card === c && idx === gameState.activePlayerIndex)) {
-                        borderColor = '#ddd'; // Fade out other cards
-                      }
-                    }
-
-                    return (
-                        <div key={i} className={`card ${isBeingStolen ? 'being-stolen' : ''}`} style={{ borderColor }}>
-                            <img src={cardImages[c]} alt={`Card value ${c}`} />
-                        </div>
-                    );
-                    })}
-                    </div>
-
-                        </div>
-                        ))}
-                        </div>
-
+      
       {showHints && (
         <div className="glossary-section">
             <h3>Strategy Glossary</h3>

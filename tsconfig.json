@@ -16,5 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["App.tsx", "main.tsx", "gameEngine.ts", "simulate.ts", "trainer.ts", "vite.config.ts"]
+  "include": ["App.tsx", "main.tsx", "gameEngine.ts", "simulate.ts", "trainer.ts", "vite.config.ts", "src/img"]
 }
