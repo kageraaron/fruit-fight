@@ -29,4 +29,4 @@ def export_ppo_to_json(model_path, json_path):
     print(f"Exported {len(all_weights)} weights to {json_path}")
 
 if __name__ == "__main__":
-    export_ppo_to_json("./rl_trainer/checkpoints/model_gen_17", "trainedModel_.ts")
+    export_ppo_to_json("./rl_trainer/checkpoints/model_gen_18", "./rl_trainer/trainedModel_1.ts")

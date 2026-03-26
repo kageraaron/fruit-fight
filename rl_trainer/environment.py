@@ -1,7 +1,7 @@
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
-from game_engine import GameEngine, CARD_VALUES, CARD_COUNTS
+from rl_trainer.game_engine import GameEngine, CARD_VALUES, CARD_COUNTS
 
 from collections import deque
 
