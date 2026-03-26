@@ -277,10 +277,11 @@ export class AdvancedAI {
 
     // Adjust 'remaining' counts if a steal is pending
     if (state.pendingSteal) {
+      const stolenCard = state.pendingSteal.card;
       state.pendingSteal.fromPlayers.forEach(fp => {
         // Ensure we don't go below zero, though theoretically this shouldn't happen
         // if 'remaining' was calculated correctly initially.
-        remaining[fp.card] = Math.max(0, remaining[fp.card] - fp.count);
+        remaining[stolenCard] = Math.max(0, remaining[stolenCard] - fp.count);
       });
     }
 
