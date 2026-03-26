@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import './App.css';
 import cardColorsRaw from './src/img/colors.json';
+import { cardImages } from './src/img';
 import { 
   AdvancedAI, 
   NeuralAI,
@@ -417,7 +418,7 @@ export default function App() {
                 <div className="card-group">
                   <div className="card-label">Drawn:</div>
                   <div className="card" style={{ borderColor: cardColors[gameState.pendingSteal.card.toString()] || '#ddd' }}>
-                    <img src={`./img/${gameState.pendingSteal.card}.png`} alt="Drawn card" />
+                    <img src={cardImages[gameState.pendingSteal.card]} alt="Drawn card" />
                   </div>
                 </div>
                 <div className="steal-arrow">→</div>
@@ -426,7 +427,7 @@ export default function App() {
                   <div className="stolen-cards-preview">
                     {Array.from({ length: gameState.pendingSteal.fromPlayers.reduce((acc, p) => acc + p.count, 0) }).map((_, i) => (
                       <div key={i} className="card mini" style={{ borderColor: cardColors[gameState.pendingSteal?.card.toString() || ''] || '#ddd' }}>
-                        <img src={`./img/${gameState.pendingSteal?.card}.png`} alt="Stolen card" />
+                        <img src={cardImages[gameState.pendingSteal?.card!]} alt="Stolen card" />
                       </div>
                     ))}
                   </div>
@@ -436,7 +437,7 @@ export default function App() {
               <div className="last-drawn-view">
                 <div className="card-label">Drawn:</div>
                 <div className="card" style={{ borderColor: cardColors[gameState.lastDrawn.toString()] || '#ddd' }}>
-                  <img src={`./img/${gameState.lastDrawn}.png`} alt="Last drawn card" />
+                  <img src={cardImages[gameState.lastDrawn]} alt="Last drawn card" />
                 </div>
               </div>
             )}
@@ -506,14 +507,16 @@ export default function App() {
 
                     return (
                         <div key={i} className={`card ${isBeingStolen ? 'being-stolen' : ''}`} style={{ borderColor }}>
-                            <img src={`./img/${c}.png`} alt={`Card value ${c}`} />
+                            <img src={cardImages[c]} alt={`Card value ${c}`} />
                         </div>
-                        );
-                        })}
-                        </div>
+                    );
+                    })}
+                    </div>
+
                         </div>
                         ))}
                         </div>
+
       {showHints && (
         <div className="glossary-section">
             <h3>Strategy Glossary</h3>
