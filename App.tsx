@@ -403,6 +403,12 @@ export default function App() {
                 <div style={{ fontSize: '1.8em', fontWeight: 'bold', color: '#e74c3c' }}>
                   {(currentEV.bustProb * 100).toFixed(1)}%
                 </div>
+                <div style={{ marginTop: '10px' }}>
+                  <span style={{ fontSize: '0.8em', color: '#7f8c8d', textTransform: 'uppercase' }}>AI Recommendation</span>
+                  <div style={{ fontSize: '1.2em', fontWeight: 'bold', color: '#2ecc71' }}>
+                    {NeuralAI.getAction(gameState, TRAINED_WEIGHTS)}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -507,7 +513,7 @@ export default function App() {
 
                     return (
                         <div key={i} className={`card ${isBeingStolen ? 'being-stolen' : ''}`} style={{ borderColor }}>
-                            <img src={`./src/img/${c}.png`} alt={`Card value ${c}`} />
+                            <img src={cardImages[c]} alt={`Card value ${c}`} />
                         </div>
                     );
                 })}
