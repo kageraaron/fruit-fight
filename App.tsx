@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import './App.css';
 import cardColorsRaw from './src/img/colors.json';
+import { cardImages } from './src/img';
 import { 
   AdvancedAI, 
   NeuralAI,
@@ -407,6 +408,71 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <div className="action-zone">
+          <div className="game-message">{gameState.message}</div>
+          
+          <div className="drawn-card-display">
+            {gameState.pendingSteal ? (
+              <div className="pending-steal-view">
+                <div className="card-group">
+                  <div className="card-label">Drawn:</div>
+                  <div className="card" style={{ borderColor: cardColors[gameState.pendingSteal.card.toString()] || '#ddd' }}>
+                    <img src={cardImages[gameState.pendingSteal.card]} alt="Drawn card" />
+                  </div>
+                </div>
+                <div className="steal-arrow">→</div>
+                <div className="card-group">
+                  <div className="card-label">Stealing:</div>
+                  <div className="stolen-cards-preview">
+                    {Array.from({ length: gameState.pendingSteal.fromPlayers.reduce((acc, p) => acc + p.count, 0) }).map((_, i) => (
+                      <div key={i} className="card mini" style={{ borderColor: cardColors[gameState.pendingSteal?.card.toString() || ''] || '#ddd' }}>
+                        <img src={cardImages[gameState.pendingSteal?.card!]} alt="Stolen card" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : gameState.lastDrawn && gameState.turnStarted && (
+              <div className="last-drawn-view">
+                <div className="card-label">Drawn:</div>
+                <div className="card" style={{ borderColor: cardColors[gameState.lastDrawn.toString()] || '#ddd' }}>
+                  <img src={cardImages[gameState.lastDrawn]} alt="Last drawn card" />
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {!gameState.isGameOver && (
+            <div className="play-controls">
+               {gameState.activePlayerIndex === 0 ? (
+                  <>
+                    {gameState.pendingSteal ? (
+                        <div className='main-btns'>
+                            <button onClick={confirmSteal}>Steal</button>
+                            <button onClick={declineSteal} className='btn-decline'>Decline</button>
+                        </div>
+                    ) : (
+                        <div className='main-btns'>
+                           <button onClick={drawCard} disabled={!gameState.turnStarted}>Hit</button>
+                           <button onClick={endTurn} disabled={!gameState.turnStarted}>Stand</button>
+                        </div>
+                    )}
+                    {!gameState.turnStarted && <button onClick={startTurn}>Start Turn</button>}
+                  </>
+               ) : (
+                  <div style={{ fontStyle: 'italic', color: '#ccc' }}>Waiting for AI...</div>
+               )}
+            </div>
+          )}
+          
+          {gameState.isGameOver && (
+            <div className="game-over">
+              <h2>Winner: {winner?.name}!</h2>
+              <button onClick={resetGame}>New Game</button>
+            </div>
+          )}
+      </div>
 
       <div className="player-grid">
         {gameState.players.map((p, idx) => (
